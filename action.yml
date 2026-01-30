@@ -24,9 +24,6 @@ runs:
       run: |
         set -euo pipefail
         WORKDIR="${{ inputs.build-workdir }}"
-        #if [[ -z "$WORKDIR" ]]; then
-        #  BUILD_WORK="${{ github.workspace }}"
-        #fi
         sudo swapoff -a
         sudo rm -f /swapfile /mnt/swapfile
         sudo docker image prune -a -f
