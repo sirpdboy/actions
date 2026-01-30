@@ -10,4 +10,4 @@ runs:
         sudo sh -c 'echo "deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-20 main" >> /etc/apt/sources.list'
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
         sudo apt-get update
-        apt-get install libllvm-20-ocaml-dev libllvm20 llvm-20 llvm-20-dev llvm-20-doc llvm-20-examples llvm-20-runtime
+        sudo apt-get -y install libllvm-20-ocaml-dev libllvm20 llvm-20 llvm-20-dev llvm-20-doc llvm-20-examples llvm-20-runtime
