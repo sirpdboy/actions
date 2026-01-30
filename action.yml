@@ -31,10 +31,10 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        BUILD_WORKDIR="${{ inputs.build-workdir }}"
-        if [[ -z "$BUILD_WORKDIR" ]]; then
-          BUILD_WORK="${{ github.workspace }}"
-        fi
+        WORKDIR="${{ inputs.build-workdir }}"
+        #if [[ -z "$WORKDIR" ]]; then
+        #  BUILD_WORK="${{ github.workspace }}"
+        #fi
         sudo swapoff -a
         sudo rm -f /swapfile /mnt/swapfile
         sudo docker image prune -a -f
@@ -49,17 +49,9 @@ runs:
         sudo sed -i '/NVM_DIR/d;/skel/d' /root/{.bashrc,.profile}
         rm -rf ~/{.cargo,.dotnet,.rustup}
         echo "::endgroup::"
-        if [[ "${{ inputs.swap-size-gb }}" != 0 ]]; then
-          echo "::group::  Create SWAP"
-          sudo dd if=/dev/zero of="/mnt/swapfile" bs=1G count=${{ inputs.swap-size-gb }}
-          sudo chmod 600 /mnt/swapfile
-          sudo mkswap /mnt/swapfile
-          sudo swapon /mnt/swapfile
-          echo "::endgroup::"
-        fi
         echo "::group::  Create Volume Group"
-        mnt_size=$(expr $(df -h /mnt | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - ${{ inputs.swap-size-gb }})
-        root_size=$(expr $(df -h / | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - ${{ inputs.root-reserve-gb }})
+        mnt_size=$(expr $(df -h /mnt | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 1)
+        root_size=$(expr $(df -h / | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 4)
         sudo truncate -s "$mnt_size"G /mnt/mnt.img
         sudo truncate -s "$root_size"G /root.img
         sudo losetup /dev/loop6 /mnt/mnt.img
@@ -68,10 +60,12 @@ runs:
         sudo pvcreate /dev/loop7
         sudo vgcreate github /dev/loop6 /dev/loop7
         sudo lvcreate -n runner -l 100%FREE github
-        sudo mkfs.xfs /dev/mapper/github-runner
-        sudo mkdir -p "$BUILD_WORKDIR"
-        sudo mount /dev/mapper/github-runner "$BUILD_WORKDIR"
-        sudo mount /dev/github/runner "$BUILD_WORKDIR"
+        sudo mkfs.xfs /dev/github/runner
+        sudo mkdir -p "$WORKDIR"
+        sudo mount /dev/mapper/github-runner "$WORKDIR"
+        sudo mount /dev/github/runner "$WORKDIR"
+        sudo chown -R runner.runner "$WORKDIR"
+        sudo chown $USER:$GROUPS "$WORKDIR"
         echo "::endgroup::"
         sudo sync
         sudo sysctl -w vm.drop_caches=3
