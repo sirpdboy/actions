@@ -1,9 +1,6 @@
-Maximize available disk space for build OpenWrt job
-This will uninstall most of the development packages pre-installed on the system and create a volume group using the /mnt and / spaces.
-
-ps: uses before actions/checkout
-
+OpenWrt Build Setup (ubuntu-24.04)
 Usage
+
 ```
 name: Test
 on: push
@@ -13,30 +10,11 @@ jobs:
     name: Test
     runs-on: ubuntu-24.04
     steps:
-      - name: Free disk space
-        uses: sirpdboy/actions@free-disk
-        with:
-          root-reserve-gb: 4
-          swap-size-gb: 4
-
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Build
-        run: |
-          echo "Free space:"
-          df -h
-```
+      - name: Build System Setup
+        uses: sirpdboy/actions@build-setup
 
-Inputs
-```
-  root-reserve-gb:
-    description: 'Space to be left free on the root filesystem, in GB.'
-    required: false
-    default: '2'
-  swap-size-gb:
-    description: 'Swap space to create, in GB.'
-    required: false
-    default: '4'
 
 ```
