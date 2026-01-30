@@ -4,15 +4,7 @@ branding:
   icon: 'crop'
   color: 'blue'
 inputs:
-  root-reserve-gb:
-    description: 'Space to be left free on the root filesystem, in GB.'
-    required: false
-    default: '2'
-  swap-size-gb:
-    description: 'Swap space to create, in GB.'
-    required: false
-    default: '4'
-  build-work:
+  build-workdir:
     description: 'Absolute path to the mount point where the build space will be available, defaults to github.workspace if unset.'
     required: false
 runs:
