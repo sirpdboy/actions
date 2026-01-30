@@ -55,9 +55,7 @@ runs:
         sudo mkfs.xfs /dev/github/runner
         sudo mkdir -p "$WORKDIR"
         sudo mount /dev/mapper/github-runner "$WORKDIR"
-        sudo mount /dev/github/runner "$WORKDIR"
-        sudo chown -R runner.runner "$WORKDIR"
-        sudo chown $USER:$GROUPS "$WORKDIR"
+        sudo chown -R runner:runner "$WORKDIR"
         echo "::endgroup::"
         sudo sync
         sudo sysctl -w vm.drop_caches=3
