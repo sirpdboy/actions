@@ -1,5 +1,5 @@
 runs:
-  using: "showinfo"
+  using: "composite"
   steps:
     - name: Show System Info
       shell: bash
