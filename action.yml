@@ -31,8 +31,8 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        BUILD_WORK="${{ inputs.build-work }}"
-        if [[ -z "$BUILD_WORK" ]]; then
+        BUILD_WORKDIR="${{ inputs.build-workdir }}"
+        if [[ -z "$BUILD_WORKDIR" ]]; then
           BUILD_WORK="${{ github.workspace }}"
         fi
         sudo swapoff -a
@@ -69,9 +69,9 @@ runs:
         sudo vgcreate github /dev/loop6 /dev/loop7
         sudo lvcreate -n runner -l 100%FREE github
         sudo mkfs.xfs /dev/mapper/github-runner
-        sudo mkdir -p "$BUILD_WORK"
-        sudo mount /dev/mapper/github-runner "$BUILD_WORK"
-        sudo mount /dev/github/runner "$BUILD_WORK"
+        sudo mkdir -p "$BUILD_WORKDIR"
+        sudo mount /dev/mapper/github-runner "$BUILD_WORKDIR"
+        sudo mount /dev/github/runner "$BUILD_WORKDIR"
         echo "::endgroup::"
         sudo sync
         sudo sysctl -w vm.drop_caches=3
