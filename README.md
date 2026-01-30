@@ -1,5 +1,3 @@
-Maximize available disk space for build OpenWrt job
-This will uninstall most of the development packages pre-installed on the system and create a volume group using the /mnt and / spaces.
 
 ps: uses before actions/checkout
 
