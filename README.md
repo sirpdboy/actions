@@ -16,8 +16,7 @@ jobs:
       - name: Free disk space
         uses: sirpdboy/actions@free-disk
         with:
-          root-reserve-gb: 4
-          swap-size-gb: 4
+          build-workdir: /builder
 
       - name: Checkout
         uses: actions/checkout@main
@@ -28,15 +27,3 @@ jobs:
           df -h
 ```
 
-Inputs
-```
-  root-reserve-gb:
-    description: 'Space to be left free on the root filesystem, in GB.'
-    required: false
-    default: '2'
-  swap-size-gb:
-    description: 'Swap space to create, in GB.'
-    required: false
-    default: '4'
-
-```
