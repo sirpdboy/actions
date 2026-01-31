@@ -4,7 +4,7 @@ runs:
     - name: Install LLVM 20
       shell: bash
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
-        echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main" | sudo tee /etc/apt/sources.list.d/llvm.list
+        sudo mkdir -p /etc/apt/sources.list.d
+        wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
         sudo apt-get update
-        sudo apt-get -y install llvm-20 clang-20 libllvm20
+        sudo apt-get -y install clang-20 llvm-20
