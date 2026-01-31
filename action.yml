@@ -1,10 +1,14 @@
 runs:
   using: "composite"
   steps:
-    - name: Install LLVM 20
+    - name: Check available LLVM versions
       shell: bash
       run: |
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/llvm-archive-keyring.gpg
-        echo "deb [signed-by=/usr/share/keyrings/llvm-archive-keyring.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble-20 main" | sudo tee /etc/apt/sources.list.d/llvm.list
+        apt-cache search llvm | grep ^llvm-
+        echo "---"
+        apt-cache search clang | grep ^clang-
+    - name: Install default LLVM
+      shell: bash
+      run: |
         sudo apt-get update
-        sudo apt-get -y install llvm-20 clang-20 libllvm20
+        sudo apt-get install -y build-essential llvm clang
