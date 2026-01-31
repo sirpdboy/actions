@@ -6,7 +6,7 @@ branding:
 inputs:
   build-workdir:
     description: 'Absolute path to the mount point where the build space will be available, defaults to github.workspace if unset.'
-    required: false
+    required: true
 runs:
   using: "composite"
   steps:
