@@ -12,7 +12,7 @@ inputs:
     description: 'Swap space to create, in GB.'
     required: false
     default: '4'
-  build-mount-path:
+  build-workdir:
     description: 'Absolute path to the mount point where the build space will be available, defaults to github.workspace if unset.'
     required: false
 runs:
@@ -31,9 +31,9 @@ runs:
       shell: bash
       run: |
         set -euo pipefail
-        BUILD_MOUNT_PATH="${{ inputs.build-mount-path }}"
-        if [[ -z "$BUILD_MOUNT_PATH" ]]; then
-          BUILD_MOUNT_PATH="${{ github.workspace }}"
+        BUILD_WORKDIR="${{ inputs.build-workdir }}"
+        if [[ -z "$BUILD_WORKDIR" ]]; then
+          BUILD_WORKDIR="${{ github.workspace }}"
         fi
         sudo swapoff -a
         sudo rm -f /swapfile /mnt/swapfile
@@ -69,9 +69,9 @@ runs:
         sudo vgcreate github /dev/loop6 /dev/loop7
         sudo lvcreate -n runner -l 100%FREE github
         sudo mkfs.xfs /dev/mapper/github-runner
-        sudo mkdir -p "$BUILD_MOUNT_PATH"
-        sudo mount /dev/mapper/github-runner "$BUILD_MOUNT_PATH"
-        sudo chown -R runner:runner "$BUILD_MOUNT_PATH"
+        sudo mkdir -p "$BUILD_WORKDIR"
+        sudo mount /dev/mapper/github-runner "$BUILD_WORKDIR"
+        sudo chown -R runner:runner "$BUILD_WORKDIR"
         echo "::endgroup::"
         sudo sync
         sudo sysctl -w vm.drop_caches=3
