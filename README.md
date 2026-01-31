@@ -1,7 +1,7 @@
-Maximize available disk space for build OpenWrt job
-This will uninstall most of the development packages pre-installed on the system and create a volume group using the /mnt and / spaces.
+The goal is to provide Debian and Ubuntu nightly packages ready to be installed with minimal impact on the distribution.
+Packages are available for amd64, i386 (Debian only), s390x and arm64 (aka aarch64). This for both the stable, qualification and development branches (currently 20, 21 and 22).
 
-ps: uses before actions/checkout
+Packages are built using stage2 and extremely similar to the one shipping in Debian & Ubuntu.
 
 Usage
 ```
@@ -25,11 +25,4 @@ jobs:
           df -h
 ```
 
-Inputs
-```
-  build-workdir:
-    description: 'Absolute path to the mount point where the build space will be available, defaults to github.workspace if unset.'
-    required: false
 
-
-```
