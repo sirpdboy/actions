@@ -15,14 +15,8 @@ jobs:
     steps:
 
     - name: Free disk space
-      uses: sirpdboy/actions@free-disk
-      with:
-        build-workdir: /builder
+      uses: sirpdboy/actions@install-llvm
 
-      - name: Build
-        run: |
-          echo "Free space:"
-          df -h
 ```
 
 
